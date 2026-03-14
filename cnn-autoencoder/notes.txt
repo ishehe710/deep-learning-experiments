@@ -1,0 +1,44 @@
+def __init__(self, latent_dim=32):    
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Conv2d(1, 16, kernel_size=5),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(16, 32, kernel_size=5),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Flatten(),
+            nn.Linear(in_features=32 * 4 * 4, out_features=latent_dim)
+        )
+        
+        self.decoder = nn.Sequential(
+            nn.Linear(in_features=latent_dim, out_features=32 * 4 * 4),
+            nn.Unflatten(1, (32, 4, 4)),
+            nn.ConvTranspose2d(32, 16, kernel_size=5, stride=2, padding=0, output_padding=1),
+            nn.ReLU(),
+            nn.ConvTranspose2d(16, 1, kernel_size=5, stride=2, padding=0, output_padding=1),
+            nn.Sigmoid()        
+        )
+
+
+def __init__(self, latent_dim=32):    
+    super().__init__()
+    # Encoder: 28x28 -> (k5) -> 24x24 -> (k5) -> 20x20
+    self.encoder = nn.Sequential(
+        nn.Conv2d(1, 16, kernel_size=5), # No stride, no padding
+        nn.ReLU(),
+        nn.Conv2d(16, 32, kernel_size=5), # No stride, no padding
+        nn.ReLU(),
+        nn.Flatten(),
+        nn.Linear(in_features=32 * 20 * 20, out_features=latent_dim) # 12,800 features
+    )
+    
+    # Decoder: 20x20 -> (k5) -> 24x24 -> (k5) -> 28x28
+    self.decoder = nn.Sequential(
+        nn.Linear(in_features=latent_dim, out_features=32 * 20 * 20),
+        nn.Unflatten(1, (32, 20, 20)),
+        nn.ConvTranspose2d(32, 16, kernel_size=5), # 20 -> 24
+        nn.ReLU(),
+        nn.ConvTranspose2d(16, 1, kernel_size=5), # 24 -> 28
+        nn.Sigmoid()        
+    )
