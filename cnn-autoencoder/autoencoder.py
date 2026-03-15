@@ -1,3 +1,80 @@
+"""
+Convolutional Autoencoder Implementation (PyTorch)
+
+This module implements a convolutional autoencoder for learning compact
+representations of images using unsupervised learning. The model is designed
+for grayscale image datasets such as MNIST (28×28 handwritten digits).
+
+The autoencoder consists of two main components:
+
+Encoder
+-------
+The encoder compresses the input image into a low-dimensional latent
+representation. It uses convolutional layers and max pooling to gradually
+reduce the spatial dimensions while increasing feature depth.
+
+Architecture:
+    Input (1×28×28)
+        ↓
+    Conv2d(1 → 16, kernel=5)
+        ↓
+    ReLU
+        ↓
+    MaxPool2d(2)
+        ↓
+    Conv2d(16 → 32, kernel=5)
+        ↓
+    ReLU
+        ↓
+    MaxPool2d(2)
+        ↓
+    Flatten
+        ↓
+    Linear → latent vector
+
+Decoder
+-------
+The decoder reconstructs the original image from the latent representation.
+It mirrors the encoder using a fully connected layer followed by transposed
+convolutions to restore spatial dimensions.
+
+Architecture:
+    Latent Vector
+        ↓
+    Linear
+        ↓
+    Unflatten
+        ↓
+    ConvTranspose2d
+        ↓
+    ReLU
+        ↓
+    ConvTranspose2d
+        ↓
+    Sigmoid → reconstructed image
+
+Training
+--------
+The model is trained to minimize the reconstruction error between the input
+image and its reconstruction using Mean Squared Error (MSE) loss.
+
+Loss Function:
+    Mean Squared Error (MSE)
+
+Optimizer:
+    Adam
+
+Additional utilities are included for:
+    - Training the model (`fit`)
+    - Evaluating reconstruction loss (`evaluate`)
+    - Visualizing original vs reconstructed images (`visualize_result`)
+
+This implementation is intended for educational and experimental purposes,
+demonstrating representation learning and basic generative modeling concepts.
+
+Author: Ilagaba Shehe
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
