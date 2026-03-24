@@ -89,7 +89,7 @@ Original MNIST images:
 
 Reconstructed MNIST images:
 
-![Reconstructed MNIST images](./images/reconstructed-mnist-images.png)
+![Reconstructed MNIST images](./images/real-reconstructed-mnist-images.png)
 
 ---
 
